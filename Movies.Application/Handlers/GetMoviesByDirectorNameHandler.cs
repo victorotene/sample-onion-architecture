@@ -1,4 +1,5 @@
 using MediatR;
+using Movies.Application.Mappers;
 using Movies.Application.Queries;
 using Movies.Application.Responses;
 using Movies.Core.Repositories;
@@ -16,6 +17,8 @@ public class GetMoviesByDirectorNameHandler : IRequestHandler<GetMoviesByDirecto
 
     public async Task<IEnumerable<MovieResponse>> Handle(GetMoviesByDirectorNameQuery request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var movieList = await _movieRepository.GetMoviesByDirectorName(request.DirectorName);
+        var movieResponseList = MovieMapper.Mapper.Map<IEnumerable<MovieResponse>>(movieList);
+        return movieResponseList;
     }
 }
